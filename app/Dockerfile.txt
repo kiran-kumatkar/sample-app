@@ -1,0 +1,7 @@
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install flask
+COPY app/ .
+ENV APP_VERSION=v1.0.0
+EXPOSE 5000
+CMD ["python", "main.pycd d:/
