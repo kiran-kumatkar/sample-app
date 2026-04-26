@@ -63,7 +63,7 @@ jobs:
       - name: Checkout gitops-config repo
         uses: actions/checkout@v4
         with:
-          repository: kirankumatkar217/gitops-config
+          repository: kiran-kumatkar/gitops-config
           token: ${{ secrets.GITOPS_PAT }}
           ref: main
 
@@ -72,11 +72,9 @@ jobs:
           NEW_TAG=${{ needs.build-and-push.outputs.image-tag }}
           echo "Updating dev deployment to image tag: ${NEW_TAG}"
 
-          # Replace image tag in dev deployment.yaml
           sed -i "s|image: kirankumatkar217/sample-app:.*|image: kirankumatkar217/sample-app:${NEW_TAG}|g" \
             environments/dev/deployment.yaml
 
-          # Verify the change
           grep "image:" environments/dev/deployment.yaml
 
       - name: Update image tag in staging values
@@ -84,11 +82,9 @@ jobs:
           NEW_TAG=${{ needs.build-and-push.outputs.image-tag }}
           echo "Updating staging values to image tag: ${NEW_TAG}"
 
-          # Replace tag in staging values.yaml
           sed -i "s|tag:.*|tag: \"${NEW_TAG}\"|g" \
             environments/staging/values.yaml
 
-          # Verify the change
           grep "tag:" environments/staging/values.yaml
 
       - name: Commit and push changes
@@ -99,7 +95,6 @@ jobs:
           git add environments/dev/deployment.yaml
           git add environments/staging/values.yaml
 
-          # Only commit if there are actual changes
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
