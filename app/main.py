@@ -24,7 +24,7 @@ def home():
     response = jsonify({
         "message": "GitOps demo app",
         "version": os.getenv("APP_VERSION", "v1.0.0"),
-        "environment": os.getenv("ENVIRONMENT", "dev")
+        "environment": os.getenv("ENVIRONMENT", "staging")
     })
     REQUEST_COUNT.labels(method='GET', endpoint='/', status=200).inc()
     REQUEST_LATENCY.labels(endpoint='/').observe(time.time() - start)
